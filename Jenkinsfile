@@ -1,45 +1,59 @@
 pipeline {
     agent any
 
-    stages{
+    stages {
 
-        stage('Init'){
-            steps{
-                echo 'Inside Init step'
+        stage('Quick Build') {
+            steps {
+                echo 'Building'
             }
         }
+        stage('Deploy to Dev') {
 
-        stage('[DEV]'){
-
-             steps{
-                     println('Call Ansible Tower for Deployment')
-             }
-
-        }
-
-        stage('[QA]'){
-            steps{
-                echo 'Doing QA deployment'
+            stages {
+                stage('Building Distributable Package') {
+                    steps {
+                        echo 'Building'
+                    }
+                }
+                stage('Archiving Package') {
+                    steps {
+                        echo 'Archiving Aritfacts'
+                        //archiveArtifacts artifacts: '/*.zip', fingerprint: true
+                    }
+                }
+                stage('Deploying Dev') {
+                    steps {
+                        echo 'Deploying'
+                        timeout(time:3, unit:'DAYS') {
+                            input message: "Approve build?"
+                        }
+                    }
+                }
             }
-         }
-}
 
-post {
-
-        failure{
-              echo 'Executing failure post'
         }
-
-        success{
-             echo 'Executing Success post'
+        stage('Deploy to Test') {
+            //when {
+               // branch 'develop'
+            //}
+            steps {
+                echo 'deploying..'
+                timeout(time:3, unit:'DAYS') {
+                    input message: "Approve build?"
+                }
+            }
         }
-
-        always{
-            echo 'Executing Always post'
-         }
+        stage('Deploy to Prod') {
+            //when {
+            //    branch 'release'
+            //}
+            steps {
+                timeout(time:3, unit:'DAYS') {
+                    input message: "Deploy to Prod?"
+                }
+                echo 'Deploying....'
+            }
+        }
     }
 }
-
-
-
-
