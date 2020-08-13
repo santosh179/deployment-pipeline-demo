@@ -10,25 +10,16 @@ pipeline {
         }
 
         stage('[DEV]'){
-                stage('Deployment'){
-                    input{
-                        message 'Do with Deployment'
-                        ok 'deploy'
-                    }
 
-                    steps{
-                            println('Call Ansible Tower for Deployment')
-                    }
-                }
+             steps{
+                     println('Call Ansible Tower for Deployment')
+             }
+
         }
 
         stage('[QA]'){
-            stages{
-                stage('Deployment'){
-                    steps{
-                        echo 'Doing QA deployment'
-                    }
-                }
+            steps{
+                echo 'Doing QA deployment'
             }
          }
 }
