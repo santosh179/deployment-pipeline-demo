@@ -20,9 +20,9 @@ pipeline {
                             println('Call Ansible Tower for Deployment')
                     }
                 }
-         }
+        }
 
-         stage('[QA]'){
+        stage('[QA]'){
             stages{
                 stage('Deployment'){
                     steps{
@@ -31,8 +31,9 @@ pipeline {
                 }
             }
          }
+}
 
-     post {
+post {
 
         failure{
               echo 'Executing failure post'
