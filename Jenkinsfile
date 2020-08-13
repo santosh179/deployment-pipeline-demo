@@ -2,6 +2,7 @@ pipeline {
     agent any
 
     stages{
+
         stage('Init'){
             steps{
                 echo 'Inside Init step'
@@ -9,7 +10,6 @@ pipeline {
         }
 
         stage('[DEV]'){
-            stages{
                 stage('Deployment'){
                     input{
                         message 'Do with Deployment'
@@ -20,7 +20,7 @@ pipeline {
                             println('Call Ansible Tower for Deployment')
                     }
                 }
-            }
+         }
 
          stage('[QA]'){
             stages{
@@ -31,9 +31,9 @@ pipeline {
                 }
             }
          }
-        }
 
      post {
+
         failure{
               echo 'Executing failure post'
         }
@@ -45,10 +45,9 @@ pipeline {
         always{
             echo 'Executing Always post'
          }
-     }
     }
-
-
-
-
 }
+
+
+
+
